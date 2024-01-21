@@ -24,5 +24,5 @@ const attendanceRouter = require("./routes/attendance");
 app.use("/ablelyf", attendanceRouter);
 
 app.listen(port, () => {
-  console.log("app successfully running");
+  console.log(`app ${port} successfully running`);
 });
