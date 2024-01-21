@@ -10,7 +10,7 @@ exports.registerUser = async (req, res) => {
     await db.collection("registerDetails").insertOne(req.body);
     await client.close();
     res.json({
-      message: "sss",
+      message: "sfss",
     });
   } catch (err) {
     console.log(err);
