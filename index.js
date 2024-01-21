@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
+const port = process.env.PORT || 3001;
 const app = express();
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
   bodyParser.urlencoded({
@@ -17,7 +18,6 @@ app.use(
     origin: "*",
   })
 );
-const port = 3001;
 
 const attendanceRouter = require("./routes/attendance");
 
