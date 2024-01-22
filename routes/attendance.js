@@ -1,15 +1,18 @@
 const {
-  loginUser,
+  handleLoginAdmin,
   registerUser,
   addUser,
   demUser,
   getUser,
   deleteUser,
   getAttendanceRouter,
+  handleRegisterAdmin,
 } = require("../controllers/attendanceFunctions");
 
 const router = require("express").Router();
-router.post("/login", loginUser);
+
+router.post("/registeradmin", handleRegisterAdmin);
+router.post("/login", handleLoginAdmin);
 router.post("/register", registerUser);
 router.post("/add", addUser);
 router.post("/dem", demUser);

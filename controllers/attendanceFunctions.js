@@ -1,29 +1,58 @@
+const uniqid = require("uniqid");
 const { MongoClient, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://ganeshyadharth:AbleLyf@students.jbrazv2.mongodb.net/?retryWrites=true&w=majority";
 
-exports.registerUser = async (req, res) => {
+exports.handleRegisterAdmin = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    await db.collection("registerDetails").insertOne(req.body);
+    let reqObj = {
+      adminID: uniqid(),
+      name: req.body.mail,
+      password: req.body.password,
+    };
+    await db.collection("admin").insertOne(reqObj);
     await client.close();
     res.json({
-      message: "sfss",
+      message: "succesfully registered admin",
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.loginUser = async (req, res) => {
+exports.handleLoginAdmin = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    let insertData = await db.collection("login").insertOne(req.body);
+    console.log(req.body);
+    let getData = await db.collection("admin").findOne({
+      name: req.body.mail,
+      password: req.body.password,
+    });
+    console.log(getData);
+    await client.close();
+    if (getData) {
+    }
+    res.json({
+      name: getData.name,
+      adminID: getData.adminID,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.registerUser = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    console.log(req.body);
+    // await db.collection("admin").insertOne(req.body);
     await client.close();
     res.json({
-      message: "sss",
+      message: "sfss",
     });
   } catch (err) {
     console.log(err);
