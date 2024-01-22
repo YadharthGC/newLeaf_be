@@ -6,7 +6,6 @@ exports.registerUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     await db.collection("registerDetails").insertOne(req.body);
     await client.close();
     res.json({
@@ -21,7 +20,6 @@ exports.loginUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     let insertData = await db.collection("login").insertOne(req.body);
     await client.close();
     res.json({
@@ -36,16 +34,15 @@ exports.addUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     //////
     if (req.body.actions === "Edit") {
-      console.log("delete", req.body.dataObj["_id"]);
+      let ids = req.body.dataObj["_id"];
       let deleteData = await db
-        .collection("candidates")
-        .deleteOne({ _id: new ObjectId(req.body.dataObj["_id"]) });
+        .collection("candidates2")
+        .deleteMany({ _id: new ObjectId(ids) });
     }
     let insertData = await db
-      .collection("candidates")
+      .collection("candidates2")
       .insertOne(req.body?.dataObj);
     await client.close();
     res.json({
@@ -60,7 +57,6 @@ exports.demUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body.sampAll, "3563");
     //////
     let insertData = await db
       .collection("candidates")
@@ -78,8 +74,7 @@ exports.getUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    let getData = await db.collection("candidates").find({}).toArray();
-
+    let getData = await db.collection("candidates2").find({}).toArray();
     await client.close();
     res.send({
       message: getData,
@@ -93,13 +88,28 @@ exports.deleteUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     let deleteData = await db
-      .collection("candidates")
+      .collection("candidates2")
       .deleteOne({ _id: new ObjectId(req.body["_id"]) });
     await client.close();
     res.send({
       message: "",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getAttendanceRouter = async (req, res) => {
+  try {
+    let url =
+      "mongodb+srv://saravana:samerareddy@cluster1.wgfyfeq.mongodb.net/?retryWrites=true&w=majority";
+    const client = await MongoClient.connect(url);
+    const db = client.db("students");
+    let getData = await db.collection("attendance").find({}).toArray();
+    await client.close();
+    res.send({
+      message: getData,
     });
   } catch (err) {
     console.log(err);
