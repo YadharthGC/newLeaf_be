@@ -12,6 +12,7 @@ exports.handleRegisterAdmin = async (req, res) => {
       name: req.body.mail,
       password: req.body.password,
     };
+    console.log(reqObj);
     await db.collection("admin").insertOne(reqObj);
     await client.close();
     res.json({
@@ -63,15 +64,17 @@ exports.addUser = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
+    let reqBody = req.body?.dataObj;
     //////
     if (req.body.actions === "Edit") {
       let ids = req.body.dataObj["_id"];
       let deleteData = await db
-        .collection("candidates2")
+        .collection("candidates")
         .deleteMany({ _id: new ObjectId(ids) });
     }
+    reqBody.candidateID = uniqid();
     let insertData = await db
-      .collection("candidates2")
+      .collection("candidates")
       .insertOne(req.body?.dataObj);
     await client.close();
     res.json({
