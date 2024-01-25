@@ -35,11 +35,17 @@ exports.handleLoginAdmin = async (req, res) => {
     await client.close();
     if (getData) {
     }
-    res.json({
-      message: "adminLogin Success",
-      name: getData.name,
-      adminID: getData.adminID,
-    });
+    if (getData) {
+      res.json({
+        message: "adminLogin Success",
+        name: getData.name,
+        adminID: getData.adminID,
+      });
+    } else {
+      res.json({
+        message: "No login",
+      });
+    }
   } catch (err) {
     console.log(err);
   }
