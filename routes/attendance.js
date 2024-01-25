@@ -7,6 +7,7 @@ const {
   demUser,
   handleEntries,
   handleAttendanceChange,
+  handleEntriesDelete,
 } = require("../controllers/attendanceFunctions");
 
 const router = require("express").Router();
@@ -19,4 +20,5 @@ router.post("/getData", handleGetCandidates);
 router.post("/deleteId", handleDeleteCandidates);
 router.post("/attendancechange", handleAttendanceChange);
 router.get("/entries", handleEntries);
+router.get("/deleteentries", handleEntriesDelete);
 module.exports = router;

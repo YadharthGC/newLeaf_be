@@ -164,6 +164,22 @@ exports.handleEntries = async (req, res) => {
   }
 };
 
+exports.handleEntriesDelete = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("students");
+    const deleteData = await db
+      .collection("attendance")
+      .findOneAndDelete({ _id: new ObjectId(req.body["_id"]) });
+    await client.close();
+    res.send({
+      message: "deleteSuccesfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 var sampJson = [
   {
     name: "Hedwiga",
