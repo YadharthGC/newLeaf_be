@@ -1,7 +1,25 @@
 const uniqid = require("uniqid");
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
 const uri =
   "mongodb+srv://ganeshyadharth:AbleLyf@students.jbrazv2.mongodb.net/?retryWrites=true&w=majority";
+
+exports.handleGetCandidates = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    console.log(req.body);
+    let getData = await db
+      .collection("candidates")
+      .find({ adminID: req.body.adminID })
+      ?.toArray();
+    await client.close();
+    res.send({
+      message: getData.reverse(),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.handleRegisterAdmin = async (req, res) => {
   try {
@@ -46,24 +64,6 @@ exports.handleLoginAdmin = async (req, res) => {
         message: "No login",
       });
     }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-exports.handleGetCandidates = async (req, res) => {
-  try {
-    const client = await MongoClient.connect(uri);
-    const db = client.db("AbleLyf");
-    console.log(req.body);
-    let getData = await db
-      .collection("candidates")
-      .find({ adminID: req.body.adminID })
-      ?.toArray();
-    await client.close();
-    res.send({
-      message: getData.reverse(),
-    });
   } catch (err) {
     console.log(err);
   }
@@ -160,7 +160,11 @@ exports.handleEntries = async (req, res) => {
       "mongodb+srv://saravana:samerareddy@cluster1.wgfyfeq.mongodb.net/?retryWrites=true&w=majority";
     const client = await MongoClient.connect(url);
     const db = client.db("students");
-    let getData = await db.collection("attendance").find({}).toArray();
+    console.log(req.body);
+    let getData = await db
+      .collection("attendance")
+      .find({ adminID: req.body.adminID })
+      .toArray();
     await client.close();
     res.send({
       message: getData,
@@ -180,6 +184,53 @@ exports.handleEntriesDelete = async (req, res) => {
     await client.close();
     res.send({
       message: "deleteSuccesfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.handleAddCam = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    console.log(req.body);
+    const deleteData = await db.collection("camera").insertOne(req.body);
+    await client.close();
+    res.send({
+      message: "posted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.handleGetCrowd = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    const getData = await db.collection("crowdentries").find({})?.toArray();
+    console.log(getData);
+    await client.close();
+    res.send({
+      dataArr: getData,
+      message: "Data found",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.handleGetHeat = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    const getData = await db.collection("heatentries").find({})?.toArray();
+    console.log(getData);
+    await client.close();
+    res.send({
+      dataArr: getData,
+      message: "Data found",
     });
   } catch (err) {
     console.log(err);
