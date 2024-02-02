@@ -156,10 +156,8 @@ exports.demUser = async (req, res) => {
 
 exports.handleEntries = async (req, res) => {
   try {
-    let url =
-      "mongodb+srv://saravana:samerareddy@cluster1.wgfyfeq.mongodb.net/?retryWrites=true&w=majority";
-    const client = await MongoClient.connect(url);
-    const db = client.db("students");
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
     console.log(req.body);
     let getData = await db
       .collection("attendance")
