@@ -103,7 +103,6 @@ exports.handleDeleteCandidates = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     let deleteData = await db
       .collection("candidates")
       .deleteMany({ _id: new ObjectId(req.body["_id"]) });
@@ -177,11 +176,40 @@ exports.handleAddCam = async (req, res) => {
   try {
     const client = await MongoClient.connect(uri);
     const db = client.db("AbleLyf");
-    console.log(req.body);
     const deleteData = await db.collection("camera").insertOne(req.body);
     await client.close();
     res.send({
       message: "posted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.handleAdvertise = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    const deleteData = await db.collection("advertise").deleteMany({});
+    const insertData = await db
+      .collection("advertise")
+      .insertOne({ fileName: req.body.fileName });
+    await client.close();
+    res.send({
+      message: "posted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.handleGetAdvertise = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    const getData = await db.collection("advertise").findOne({});
+    console.log(getData);
+    await client.close();
+    res.send({
+      message: getData,
     });
   } catch (err) {
     console.log(err);
@@ -214,6 +242,24 @@ exports.handleGetHeat = async (req, res) => {
     res.send({
       dataArr: getData,
       message: "Data found",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.handleAddEntries = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    console.log(req.body);
+    let insertData = await db
+      .collection("attendance")
+      .insertOne(req.body?.dataObj);
+
+    await client.close();
+    res.json({
+      message: "attendate entries set",
     });
   } catch (err) {
     console.log(err);

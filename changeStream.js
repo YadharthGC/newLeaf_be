@@ -8,12 +8,15 @@ async function startChangeStream() {
   const client = new MongoClient(uri);
   await client.connect();
   const db = client.db("AbleLyf");
-  const collection = db.collection("candidates");
 
-  changeStream = collection.watch();
+  changeStreamCandidates = db.collection("candidates").watch();
+  changeStreamAttendance = db.collection("attendance").watch();
 
-  changeStream.on("change", (change) => {
-    console.log("change", change);
+  changeStreamCandidates.on("change", (change) => {
+    console.log("candidates database changed");
+  });
+  changeStreamAttendance.on("change", (change) => {
+    console.log("attendance database changed");
   });
 }
 
