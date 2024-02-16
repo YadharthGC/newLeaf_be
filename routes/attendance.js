@@ -13,6 +13,7 @@ const {
   handleGetHeat,
   handleAdvertise,
   handleGetAdvertise,
+  handleFaceDetectB,
 } = require("../controllers/attendanceFunctions");
 const changeStream = require("../changeStream");
 const router = require("express").Router();

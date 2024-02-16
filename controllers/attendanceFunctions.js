@@ -2,6 +2,11 @@ const uniqid = require("uniqid");
 const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
 const uri =
   "mongodb+srv://ganeshyadharth:AbleLyf@students.jbrazv2.mongodb.net/?retryWrites=true&w=majority";
+const faceapi = require("face-api.js");
+const { canvas, faceDetectionNet, faceDetectionOptions } = faceapi;
+const fs = require("fs");
+const path = require("path");
+const { Buffer } = require("buffer");
 
 exports.handleGetCandidates = async (req, res) => {
   try {

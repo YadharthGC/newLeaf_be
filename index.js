@@ -21,12 +21,12 @@ app.use(
 );
 const { Server } = require("socket.io");
 
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
 // io.on("connection", (socket) => {
 //   console.log("userConnected", socket.id);
 
@@ -36,9 +36,9 @@ const io = new Server(server, {
 //   });
 // });
 
-io.on("connection", (socket) => {
-  console.log(" a user been connected");
-});
+// io.on("connection", (socket) => {
+//   console.log(" a user been connected");
+// });
 
 const attendanceRouter = require("./routes/attendance");
 
