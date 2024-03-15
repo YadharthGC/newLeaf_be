@@ -270,3 +270,55 @@ exports.handleAddEntries = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.handleCandidateBehaviour = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    let getData = await db.collection("candidateBehaviour").find({})?.toArray();
+    let getDataB = await db.collection("candidates").find({})?.toArray();
+
+    let unionArr = [];
+    for (let i = 0; i < getData?.reverse()?.length; i++) {
+      for (let j = 0; j < getDataB.length; j++) {
+        if (getData[i].name === getDataB[j].name) {
+          const mergedObject = { ...getData[i], ...getDataB[j] };
+          unionArr.push(mergedObject);
+          break;
+        }
+      }
+    }
+    await client.close();
+    res.json({
+      msg: getData,
+      msgB: getDataB,
+      all: unionArr,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.handleOneBehave = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("AbleLyf");
+    console.log(req.params.id);
+    let getDataB = await db
+      .collection("candidates")
+      .findOne({ _id: new ObjectId(req.params.id) });
+    let merge = getDataB;
+    if (getDataB) {
+      let getData = await db
+        .collection("candidateBehaviour")
+        .findOne({ name: getDataB.name });
+      merge = { ...getData, ...getDataB };
+    }
+    await client.close();
+    res.json({
+      msg: merge,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
