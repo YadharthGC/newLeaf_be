@@ -14,11 +14,13 @@ const {
   handleAdvertise,
   handleGetAdvertise,
   handleFaceDetectB,
+  handleCandidateBehaviour,
+  handleOneBehave,
 } = require("../controllers/attendanceFunctions");
 const changeStream = require("../changeStream");
 const router = require("express").Router();
 
-changeStream.startChangeStream();
+// changeStream.startChangeStream();
 router.post("/registeradmin", handleRegisterAdmin);
 router.post("/login", handleLoginAdmin);
 router.post("/add", handleAddUser);
@@ -33,4 +35,6 @@ router.post("/postad", handleAdvertise);
 router.post("/getad", handleGetAdvertise);
 router.get("/crowdentries", handleGetCrowd);
 router.get("/heatentries", handleGetHeat);
+router.get("/behave", handleCandidateBehaviour);
+router.get("/onebehave/:id", handleOneBehave);
 module.exports = router;
